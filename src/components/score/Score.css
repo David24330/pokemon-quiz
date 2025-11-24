@@ -1,0 +1,21 @@
+.score-container {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  margin-top: 50px;
+}
+
+.replay-btn {
+  margin-top: 20px;
+  padding: 10px 25px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid #333;
+  background-color: #f0f0f0;
+  transition: 0.2s;
+}
+
+.replay-btn:hover {
+  background-color: #ffe066;
+  transform: scale(1.05);
+}
+

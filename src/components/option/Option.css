@@ -1,0 +1,14 @@
+.option-btn {
+  margin: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid #333;
+  background-color: #f0f0f0;
+  transition: 0.2s;
+}
+
+.option-btn:hover {
+  background-color: #ffe066;
+  transform: scale(1.05);
+}
