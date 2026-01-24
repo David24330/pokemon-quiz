@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- === NAVBAR === -->
+    <nav id="navbar">
+        <ul>
+            <li><a href="#" data-region="kanto">Kanto</a></li>
+            <li><a href="#" data-region="johto">Johto</a></li>
+            <li><a href="#" data-region="hoenn">Hoenn</a></li>
+            <li><a href="#" data-region="sinnoh">Sinnoh</a></li>
+            <li><a href="#" data-region="unova">Unova</a></li>
+            <li><a href="#" data-region="kalos">Kalos</a></li>
+            <li><a href="#" data-region="alola">Alola</a></li>
+            <li><a href="#" data-region="galar">Galar</a></li>
+            <li><a href="#" data-region="paldea">Paldea</a></li>
+            <li>
+                <select id="language-select">
+                    <option value="en" selected>English</option>
+                    <option value="fr">Français</option>
+                    <option value="es">Español</option>
+                </select>
+            </li>
+        </ul>
+    </nav>
+
+    <main>
+
+        <!-- === ACCUEIL === -->
+        <div id="welcome-screen" class="container">
+            <h1 id="welcome-title">Welcome to the Pokémon Quiz!</h1>
+            <p id="welcome-text">Test your knowledge of Pokémon. Can you answer all the questions?</p>
+            <button id="start-quiz-btn">Start Quiz</button>
+        </div>
+
+
+        <!-- === QUIZ === -->
+        <div id="quiz-screen" class="container" style="display:none;">
+            <div id="score">Score: 0</div>
+            <div id="timer">Time left: 300s</div>
+            <h2 id="question"></h2>
+            <div id="options" class="options"></div>
+        </div>
+
+    </main>
+
+    <script src="/js/script.js"></script>
+
+    <footer>
+        <div class="footer-content">
+            <p> Pokémon © Nintendo / Game Freak / The Pokémon Company. 
+                This is an unofficial fan-made website, not affiliated with or endorsed by Nintendo, Game Freak, or The Pokémon Company.</p>
+        </div>
+    </footer>
+</body>
+</html>
