@@ -9,6 +9,24 @@
             }, 
             "type": [5, 8],
             "abilities": ["Overgrow", "Chlorophyll"],
+            "height": 0.7,
+            "weight": 6.9,
+            "eggGroups": ["Grass", "Monster"],
+            "description": {
+                "en": "A strange seed was planted on its back at birth. The plant sprouts and grows with this Pokémon.",
+                "fr": "Une étrange graine a été plantée sur son dos à la naissance. La plante pousse avec ce Pokémon.",
+                "es": "Una extraña semilla fue plantada en su espalda al nacer. La planta brota y crece con este Pokémon."
+            },
+            "baseStats": {
+                "hp": 45,
+                "attack": 49,
+                "defense": 49,
+                "specialAttack": 65,
+                "specialDefense": 65,
+                "speed": 45
+            },
+            "movePool": ["Tackle", "Vine Whip", "Razor Leaf", "Solar Beam"],
+            "evolution": [2],
             "picture": "bulbasaur.png",
             "icon": "bulbasaur_icon.png"
         },

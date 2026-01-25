@@ -247,4 +247,12 @@ footer a:hover {
     cursor: default;
 }
 
+a[data-region].active {
+    background-color: #764ba2; /* couleur différente pour montrer que c'est sélectionné */
+    color: white;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+
 

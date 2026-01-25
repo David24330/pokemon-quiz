@@ -56,36 +56,54 @@ async function loadGameData(regions = []) {
         });
     }
 
-    const [regionsData, typesData] = await Promise.all([
+    const [regionsData, typesData, trainersData] = await Promise.all([
         Promise.all(regionFetches),
-        fetch("data/types/types.json").then(r => r.json())
+        fetch("data/types/types.json").then(r => r.json()),
+        fetch("data/trainers/trainers.json").then(r => r.json())
     ]);
 
     data = {
         Pokemons: regionsData.flatMap(r => r.Pokemons),
         Places: regionsData.flatMap(r => r.Places),
-        Types: typesData.types
+        Types: typesData.types,
+        Trainers: trainersData.Trainers
     };
 }
+
 
 
 // ======================== Sélection région ========================
 let selectedRegions = [];
 
+// Gestion du clic sur chaque lien de région
 document.querySelectorAll("a[data-region]").forEach(link => {
     link.addEventListener("click", async (e) => {
         e.preventDefault();
 
-        selectedRegions = [link.dataset.region];
-        await loadGameData(selectedRegions);
+        const region = link.dataset.region;
 
-        // si le quiz est déjà lancé, on relance une question
+        // Toggle sélection : si déjà sélectionnée, on retire ; sinon on ajoute
+        if (selectedRegions.includes(region)) {
+            selectedRegions = selectedRegions.filter(r => r !== region);
+            link.classList.remove("active");
+        } else {
+            selectedRegions.push(region);
+            link.classList.add("active");
+        }
+
+        // Charge les données pour toutes les régions sélectionnées
+        if (selectedRegions.length === 0) {
+            await loadGameData(); // aucune sélection = toutes les régions
+        } else {
+            await loadGameData(selectedRegions);
+        }
+
+        // Si le quiz est déjà lancé, régénère une question avec les nouvelles données
         if (quizScreen.style.display !== "none") {
             generateRandomQuestion();
         }
     });
 });
-
 
 
 // ======================== Menu langue ========================
@@ -140,10 +158,42 @@ function startGame() {
 
 // ======================== Génération de questions ========================
 function generateRandomQuestion() {
-    if (Math.random() < 0.5) generateRandomTypeQuestion();
-    else generateRandomRouteQuestion();
+    const rand = Math.random();
+    if (rand < 0.33) generateRandomTypeQuestion();
+    else if (rand < 0.66) generateRandomRouteQuestion();
+    else generateRandomTrainerQuestion();
 }
 
+
+//======================== Génération question entraîneur ========================
+function generateRandomTrainerQuestion() {
+    optionsEl.innerHTML = "";
+
+    const trainer = getRandomItem(data.Trainers);
+    currentQuestionType = "trainer";
+    currentRouteOrType = trainer;
+
+    const trainerPokemons = data.Pokemons.filter(p => trainer.Pokemons.includes(p.id));
+    if (!trainerPokemons.length) { 
+        generateRandomTypeQuestion(); 
+        return; 
+    }
+
+    const correctPokemon = getRandomItem(trainerPokemons);
+    currentCorrectId = correctPokemon.id;
+
+    const wrongPokemons = shuffle(data.Pokemons.filter(p => !trainer.Pokemons.includes(p.id))).slice(0, 3);
+    const answers = shuffle([correctPokemon, ...wrongPokemons]);
+    currentQuestion = answers.map(p => p.id);
+
+    questionEl.textContent = currentLang === "fr" ? `Quel Pokémon appartient à ${trainer.name} ?` :
+                            currentLang === "es" ? `¿Qué Pokémon pertenece a ${trainer.name}?` :
+                            `Which Pokémon belongs to ${trainer.name}?`;
+
+    answers.forEach(pokemon => createOption(pokemon, correctPokemon.id));
+}
+
+//======================== Génération question type ========================
 function generateRandomTypeQuestion() {
     optionsEl.innerHTML = "";
     const type = getRandomItem(data.Types);
@@ -168,6 +218,7 @@ function generateRandomTypeQuestion() {
     answers.forEach(pokemon => createOption(pokemon, correctPokemon.id));
 }
 
+//======================== Génération question route ========================
 function generateRandomRouteQuestion() {
     optionsEl.innerHTML = "";
 
@@ -225,7 +276,13 @@ function regenerateCurrentQuestion() {
         questionEl.textContent = currentLang === "fr" ? `Quel Pokémon apparaît sur ${route.name.fr} ?` :
                                 currentLang === "es" ? `¿Qué Pokémon aparece en ${route.name.es}?` :
                                 `Which Pokémon appears on ${route.name.en}?`;
+    } else if (currentQuestionType === "trainer") {
+    const trainer = currentRouteOrType;
+    questionEl.textContent = currentLang === "fr" ? `Quel Pokémon appartient à ${trainer.name} ?` :
+                            currentLang === "es" ? `¿Qué Pokémon pertenece a ${trainer.name}?` :
+                            `Which Pokémon belongs to ${trainer.name}?`;
     }
+
 
     answers.forEach(pokemon => createOption(pokemon, currentCorrectId));
 }
