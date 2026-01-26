@@ -75,6 +75,24 @@
             },
             "type": [2],
             "abilities": ["Blaze", "Solar Power"],
+            "height": 1.1,
+            "weight": 19.0,
+            "eggGroups": ["Monster", "Dragon"],
+            "description": {
+                "en": "When it swings its burning tail, it elevates the temperature to unbearably high levels.",
+                "fr": "Lorsqu'il agite sa queue enflammée, il élève la température à des niveaux insupportablement élevés.",
+                "es": "Cuando agita su cola ardiente, eleva la temperatura a niveles insoportablemente altos."
+            },
+            "baseStats": {
+                "hp": 58,
+                "attack": 64,
+                "defense": 58,
+                "specialAttack": 80,
+                "specialDefense": 65,
+                "speed": 80
+            },
+            "movePool": ["Scratch", "Ember", "Flamethrower", "Fire Spin"],
+            "evolution": [6],
             "picture": "charmeleon.png",
             "icon": "charmeleon_icon.png"
         },
@@ -99,6 +117,24 @@
             },
             "type": [3],
             "abilities": ["Torrent", "Rain Dish"],
+            "height": 0.5,
+            "weight": 9.0,
+            "eggGroups": ["Monster", "Water 1"],
+            "description": {
+                "en": "When it retracts its long neck into its shell, it squirts out water with vigorous force.",
+                "fr": "Lorsqu'il rétracte son long cou dans sa carapace, il projette de l'eau avec une force vigoureuse.",
+                "es": "Cuando retrae su largo cuello en su caparazón, expulsa agua con vigorosa fuerza."
+            },
+            "baseStats": {
+                "hp": 44,
+                "attack": 48,
+                "defense": 65,
+                "specialAttack": 50,
+                "specialDefense": 64,
+                "speed": 43
+            },
+            "movePool": ["Tackle", "Water Gun", "Bubble", "Hydro Pump"],
+            "evolution": [8],
             "picture": "squirtle.png",
             "icon": "squirtle_icon.png"
         },
@@ -135,6 +171,24 @@
             },
             "type": [12],
             "abilities": ["Shield Dust", "Run Away"],
+            "height": 0.3,
+            "weight": 2.9,
+            "eggGroups": ["Bug"],
+            "description": {
+                "en": "Its short feet are tipped with suction pads that enable it to tirelessly climb slopes and walls.",
+                "fr": "Ses petits pieds sont munis de ventouses qui lui permettent de grimper sans relâche les pentes et les murs.",
+                "es": "Sus pies cortos están rematados con ventosas que le permiten trepar incansablemente pendientes y paredes."
+            },
+            "baseStats": {
+                "hp": 45,
+                "attack": 30,
+                "defense": 35,
+                "specialAttack": 20,
+                "specialDefense": 20,
+                "speed": 45
+            },
+            "movePool": ["Tackle", "String Shot"],
+            "evolution": [11],
             "picture": "caterpie.png",
             "icon": "caterpie_icon.png"
         },

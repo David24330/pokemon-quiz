@@ -159,9 +159,76 @@ function startGame() {
 // ======================== Génération de questions ========================
 function generateRandomQuestion() {
     const rand = Math.random();
-    if (rand < 0.33) generateRandomTypeQuestion();
-    else if (rand < 0.66) generateRandomRouteQuestion();
-    else generateRandomTrainerQuestion();
+
+    if (rand < 0.25) {
+        generateRandomTypeQuestion();
+    } else if (rand < 0.50) {
+        generateRandomRouteQuestion();
+    } else if (rand < 0.75) {
+        generateRandomTrainerQuestion();
+    } else {
+        generateRandomStatQuestion();
+    }
+}
+
+
+
+//======================== Création question statistique ========================
+function generateRandomStatQuestion() {
+    optionsEl.innerHTML = "";
+
+    currentQuestionType = "stat";
+
+    // 1️⃣ Liste des stats possibles (adaptées à baseStats)
+    const statsList = [
+        { key: "hp", fr: "PV", en: "HP", es: "PS" },
+        { key: "attack", fr: "l'attaque", en: "attack", es: "el ataque" },
+        { key: "defense", fr: "la défense", en: "defense", es: "la defensa" },
+        { key: "specialAttack", fr: "l'attaque spéciale", en: "special attack", es: "el ataque especial" },
+        { key: "specialDefense", fr: "la défense spéciale", en: "special defense", es: "la defensa especial" },
+        { key: "speed", fr: "la vitesse", en: "speed", es: "la velocidad" }
+    ];
+
+    // 2️⃣ Choix aléatoire d'une stat
+    const stat = getRandomItem(statsList);
+    currentRouteOrType = stat;
+
+    // 3️⃣ Sélection de 4 Pokémon ayant cette stat
+    const pokemons = shuffle(
+        data.Pokemons.filter(
+            p => p.baseStats && p.baseStats[stat.key] !== undefined
+        )
+    ).slice(0, 4);
+
+    // Sécurité anti-bug
+    if (pokemons.length < 4) {
+        generateRandomTypeQuestion();
+        return;
+    }
+
+    // 4️⃣ Pokémon avec la meilleure valeur pour cette stat
+    const sorted = [...pokemons].sort(
+        (a, b) => b.baseStats[stat.key] - a.baseStats[stat.key]
+    );
+
+    const correctPokemon = sorted[0];
+    currentCorrectId = correctPokemon.id;
+
+    // 5️⃣ Sauvegarde des réponses pour la regénération
+    currentQuestion = pokemons.map(p => p.id);
+
+    // 6️⃣ Texte de la question
+    questionEl.textContent =
+        currentLang === "fr"
+            ? `Lequel de ces Pokémon a le plus de ${stat.fr} ?`
+            : currentLang === "es"
+            ? `¿Cuál de estos Pokémon tiene más ${stat.es}?`
+            : `Which of these Pokémon has the highest ${stat.en}?`;
+
+    // 7️⃣ Affichage des options
+    shuffle(pokemons).forEach(pokemon =>
+        createOption(pokemon, correctPokemon.id)
+    );
 }
 
 
@@ -281,6 +348,14 @@ function regenerateCurrentQuestion() {
     questionEl.textContent = currentLang === "fr" ? `Quel Pokémon appartient à ${trainer.name} ?` :
                             currentLang === "es" ? `¿Qué Pokémon pertenece a ${trainer.name}?` :
                             `Which Pokémon belongs to ${trainer.name}?`;
+    } else if (currentQuestionType === "stat") {
+    const stat = currentRouteOrType;
+    questionEl.textContent =
+        currentLang === "fr"
+            ? `Lequel de ces Pokémon a le plus de ${stat.fr} ?`
+            : currentLang === "es"
+            ? `¿Cuál de estos Pokémon tiene más ${stat.es}?`
+            : `Which of these Pokémon has the highest ${stat.en}?`;
     }
 
 
