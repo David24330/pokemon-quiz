@@ -37,6 +37,14 @@ const texts = {
 function getRandomItem(array) { return array[Math.floor(Math.random() * array.length)]; }
 function shuffle(array) { return array.sort(() => Math.random() - 0.5); }
 
+// ======================== Question registry ========================
+const questionGenerators = [];
+
+function registerQuestion(generatorFn) {
+    questionGenerators.push(generatorFn);
+}
+
+
 // ======================== Charger JSON ========================
 async function loadGameData(regions = []) {
     const regionFetches = [];
@@ -158,28 +166,71 @@ function startGame() {
 
 // ======================== Génération de questions ========================
 function generateRandomQuestion() {
-    const rand = Math.random();
+    if (questionGenerators.length === 0) return;
 
-    if (rand < 0.25) {
-        generateRandomTypeQuestion();
-    } else if (rand < 0.50) {
-        generateRandomRouteQuestion();
-    } else if (rand < 0.75) {
-        generateRandomTrainerQuestion();
-    } else {
-        generateRandomStatQuestion();
-    }
+    const generator = getRandomItem(questionGenerators);
+    generator();
 }
 
+
+
+
+//======================== Gestion question description ========================
+function generateRandomDescriptionQuestion() {
+    optionsEl.innerHTML = "";
+
+    currentQuestionType = "description";
+
+    // 1️⃣ Pokémon ayant une description dans la langue courante
+    const validPokemons = data.Pokemons.filter(
+        p => p.description && p.description[currentLang]
+    );
+
+    if (validPokemons.length < 4) {
+        generateRandomTypeQuestion();
+        return;
+    }
+
+    // 2️⃣ Pokémon correct
+    const correctPokemon = getRandomItem(validPokemons);
+    currentCorrectId = correctPokemon.id;
+
+    // 3️⃣ Mauvaises réponses
+    const wrongPokemons = shuffle(
+        validPokemons.filter(p => p.id !== correctPokemon.id)
+    ).slice(0, 3);
+
+    const answers = shuffle([correctPokemon, ...wrongPokemons]);
+    currentQuestion = answers.map(p => p.id);
+
+    currentRouteOrType = correctPokemon;
+
+    // 4️⃣ Texte de la question
+    questionEl.textContent =
+        currentLang === "fr"
+            ? `Quel est ce Pokémon ?`
+            : currentLang === "es"
+            ? `¿Qué Pokémon es este?`
+            : `Which Pokémon is this?`;
+
+    // 5️⃣ Affichage de la description
+    const desc = document.createElement("p");
+    desc.className = "pokemon-description";
+    desc.textContent = correctPokemon.description[currentLang];
+    questionEl.appendChild(desc);
+
+    // 6️⃣ Affichage des réponses
+    answers.forEach(pokemon =>
+        createOption(pokemon, correctPokemon.id)
+    );
+}
 
 
 //======================== Création question statistique ========================
 function generateRandomStatQuestion() {
     optionsEl.innerHTML = "";
-
     currentQuestionType = "stat";
 
-    // 1️⃣ Liste des stats possibles (adaptées à baseStats)
     const statsList = [
         { key: "hp", fr: "PV", en: "HP", es: "PS" },
         { key: "attack", fr: "l'attaque", en: "attack", es: "el ataque" },
@@ -189,47 +240,53 @@ function generateRandomStatQuestion() {
         { key: "speed", fr: "la vitesse", en: "speed", es: "la velocidad" }
     ];
 
-    // 2️⃣ Choix aléatoire d'une stat
     const stat = getRandomItem(statsList);
     currentRouteOrType = stat;
 
-    // 3️⃣ Sélection de 4 Pokémon ayant cette stat
     const pokemons = shuffle(
         data.Pokemons.filter(
             p => p.baseStats && p.baseStats[stat.key] !== undefined
         )
     ).slice(0, 4);
 
-    // Sécurité anti-bug
     if (pokemons.length < 4) {
         generateRandomTypeQuestion();
         return;
     }
 
-    // 4️⃣ Pokémon avec la meilleure valeur pour cette stat
-    const sorted = [...pokemons].sort(
-        (a, b) => b.baseStats[stat.key] - a.baseStats[stat.key]
+    // 🔀 NOUVEAU : choix aléatoire (haut ou bas)
+    const isHighest = Math.random() < 0.5;
+
+    const sorted = [...pokemons].sort((a, b) =>
+        isHighest
+            ? b.baseStats[stat.key] - a.baseStats[stat.key]
+            : a.baseStats[stat.key] - b.baseStats[stat.key]
     );
 
     const correctPokemon = sorted[0];
     currentCorrectId = correctPokemon.id;
 
-    // 5️⃣ Sauvegarde des réponses pour la regénération
     currentQuestion = pokemons.map(p => p.id);
 
-    // 6️⃣ Texte de la question
+    // 📝 Texte dynamique
     questionEl.textContent =
         currentLang === "fr"
-            ? `Lequel de ces Pokémon a le plus de ${stat.fr} ?`
+            ? isHighest
+                ? `Lequel de ces Pokémon a le plus de ${stat.fr} ?`
+                : `Lequel de ces Pokémon a le moins de ${stat.fr} ?`
             : currentLang === "es"
-            ? `¿Cuál de estos Pokémon tiene más ${stat.es}?`
-            : `Which of these Pokémon has the highest ${stat.en}?`;
+            ? isHighest
+                ? `¿Cuál de estos Pokémon tiene más ${stat.es}?`
+                : `¿Cuál de estos Pokémon tiene menos ${stat.es}?`
+            : isHighest
+                ? `Which of these Pokémon has the highest ${stat.en}?`
+                : `Which of these Pokémon has the lowest ${stat.en}?`;
 
-    // 7️⃣ Affichage des options
     shuffle(pokemons).forEach(pokemon =>
         createOption(pokemon, correctPokemon.id)
     );
 }
+
 
 
 //======================== Génération question entraîneur ========================
@@ -344,18 +401,32 @@ function regenerateCurrentQuestion() {
                                 currentLang === "es" ? `¿Qué Pokémon aparece en ${route.name.es}?` :
                                 `Which Pokémon appears on ${route.name.en}?`;
     } else if (currentQuestionType === "trainer") {
-    const trainer = currentRouteOrType;
-    questionEl.textContent = currentLang === "fr" ? `Quel Pokémon appartient à ${trainer.name} ?` :
-                            currentLang === "es" ? `¿Qué Pokémon pertenece a ${trainer.name}?` :
-                            `Which Pokémon belongs to ${trainer.name}?`;
+        const trainer = currentRouteOrType;
+        questionEl.textContent = currentLang === "fr" ? `Quel Pokémon appartient à ${trainer.name} ?` :
+                                currentLang === "es" ? `¿Qué Pokémon pertenece a ${trainer.name}?` :
+                                `Which Pokémon belongs to ${trainer.name}?`;
     } else if (currentQuestionType === "stat") {
-    const stat = currentRouteOrType;
-    questionEl.textContent =
-        currentLang === "fr"
-            ? `Lequel de ces Pokémon a le plus de ${stat.fr} ?`
-            : currentLang === "es"
-            ? `¿Cuál de estos Pokémon tiene más ${stat.es}?`
-            : `Which of these Pokémon has the highest ${stat.en}?`;
+        const stat = currentRouteOrType;
+        questionEl.textContent =
+            currentLang === "fr"
+                ? `Lequel de ces Pokémon a le plus de ${stat.fr} ?`
+                : currentLang === "es"
+                ? `¿Cuál de estos Pokémon tiene más ${stat.es}?`
+                : `Which of these Pokémon has the highest ${stat.en}?`;
+    } else if (currentQuestionType === "description") {
+        const pokemon = currentRouteOrType;
+
+        questionEl.textContent =
+            currentLang === "fr"
+                ? `Quel est ce Pokémon ?`
+                : currentLang === "es"
+                ? `¿Qué Pokémon es este?`
+                : `Which Pokémon is this?`;
+
+        const desc = document.createElement("p");
+        desc.className = "pokemon-description";
+        desc.textContent = pokemon.description[currentLang];
+        questionEl.appendChild(desc);
     }
 
 
@@ -404,6 +475,14 @@ function endGame() {
     restartBtn.onclick = () => startGame();
     optionsEl.appendChild(restartBtn);
 }
+
+// ======================== Enregistrement des questions ========================
+registerQuestion(generateRandomTypeQuestion);
+registerQuestion(generateRandomRouteQuestion);
+registerQuestion(generateRandomTrainerQuestion);
+registerQuestion(generateRandomStatQuestion);
+registerQuestion(generateRandomDescriptionQuestion);
+
 
 // ======================== Initialisation ========================
 document.addEventListener("DOMContentLoaded", async () => {
