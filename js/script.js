@@ -306,7 +306,12 @@ function generateRandomTrainerQuestion() {
     const correctPokemon = getRandomItem(trainerPokemons);
     currentCorrectId = correctPokemon.id;
 
-    const wrongPokemons = shuffle(data.Pokemons.filter(p => !trainer.Pokemons.includes(p.id))).slice(0, 3);
+    const wrongPokemons = shuffle(
+    data.Pokemons.filter(p => 
+            !trainer.Pokemons.includes(p.id) && p.id !== correctPokemon.id
+        )
+    ).slice(0, 3);
+
     const answers = shuffle([correctPokemon, ...wrongPokemons]);
     currentQuestion = answers.map(p => p.id);
 
