@@ -1,7 +1,7 @@
 // ======================== Variables ========================
 let data = null;
 let score = 0;
-let timer = 300;
+let timer = 150;
 let timerInterval = null;
 let currentLang = "en";
 
@@ -151,7 +151,7 @@ startBtn.onclick = () => {
 
 function startGame() {
     score = 0;
-    timer = 300;
+    timer = 150;
     updateScore();
     updateTimer();
 
@@ -233,11 +233,11 @@ function generateRandomStatQuestion() {
 
     const statsList = [
         { key: "hp", fr: "PV", en: "HP", es: "PS" },
-        { key: "attack", fr: "l'attaque", en: "attack", es: "el ataque" },
-        { key: "defense", fr: "la défense", en: "defense", es: "la defensa" },
-        { key: "specialAttack", fr: "l'attaque spéciale", en: "special attack", es: "el ataque especial" },
-        { key: "specialDefense", fr: "la défense spéciale", en: "special defense", es: "la defensa especial" },
-        { key: "speed", fr: "la vitesse", en: "speed", es: "la velocidad" }
+        { key: "attack", fr: "attaque", en: "attack", es: "el ataque" },
+        { key: "defense", fr: "défense", en: "defense", es: "la defensa" },
+        { key: "specialAttack", fr: "attaque spéciale", en: "special attack", es: "el ataque especial" },
+        { key: "specialDefense", fr: "défense spéciale", en: "special defense", es: "la defensa especial" },
+        { key: "speed", fr: "vitesse", en: "speed", es: "la velocidad" }
     ];
 
     const stat = getRandomItem(statsList);
@@ -297,30 +297,44 @@ function generateRandomTrainerQuestion() {
     currentQuestionType = "trainer";
     currentRouteOrType = trainer;
 
-    const trainerPokemons = data.Pokemons.filter(p => trainer.Pokemons.includes(p.id));
-    if (!trainerPokemons.length) { 
-        generateRandomTypeQuestion(); 
-        return; 
+    const trainerName =
+        trainer.name[currentLang] ||
+        trainer.name.en;
+
+    const trainerPokemons = data.Pokemons.filter(p =>
+        trainer.Pokemons.includes(p.id)
+    );
+
+    if (!trainerPokemons.length) {
+        generateRandomTypeQuestion();
+        return;
     }
 
     const correctPokemon = getRandomItem(trainerPokemons);
     currentCorrectId = correctPokemon.id;
 
     const wrongPokemons = shuffle(
-    data.Pokemons.filter(p => 
-            !trainer.Pokemons.includes(p.id) && p.id !== correctPokemon.id
+        data.Pokemons.filter(p =>
+            !trainer.Pokemons.includes(p.id) &&
+            p.id !== correctPokemon.id
         )
     ).slice(0, 3);
 
     const answers = shuffle([correctPokemon, ...wrongPokemons]);
     currentQuestion = answers.map(p => p.id);
 
-    questionEl.textContent = currentLang === "fr" ? `Quel Pokémon appartient à ${trainer.name} ?` :
-                            currentLang === "es" ? `¿Qué Pokémon pertenece a ${trainer.name}?` :
-                            `Which Pokémon belongs to ${trainer.name}?`;
+    questionEl.textContent =
+        currentLang === "fr"
+            ? `Quel Pokémon appartient à ${trainerName} ?`
+            : currentLang === "es"
+            ? `¿Qué Pokémon pertenece a ${trainerName}?`
+            : `Which Pokémon belongs to ${trainerName}?`;
 
-    answers.forEach(pokemon => createOption(pokemon, correctPokemon.id));
+    answers.forEach(pokemon =>
+        createOption(pokemon, correctPokemon.id)
+    );
 }
+
 
 //======================== Génération question type ========================
 function generateRandomTypeQuestion() {

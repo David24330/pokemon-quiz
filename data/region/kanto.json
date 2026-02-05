@@ -425,6 +425,222 @@
             "icon": "raticate_icon.png"
         },
         {
+            "id": 21,
+            "name": {
+                "en": "Spearow",
+                "fr": "Piafabec",
+                "es": "Spearow"
+            },
+            "type": [1, 10],
+            "abilities": [],
+            "picture": "spearow.png",
+            "icon": "spearow_icon.png"
+        },
+        {
+            "id": 22,
+            "name": {
+                "en": "Fearow",
+                "fr": "Rapasdepic",
+                "es": "Fearow"
+            },
+            "type": [1, 10],
+            "abilities": [],
+            "picture": "fearow.png",
+            "icon": "fearow_icon.png"
+        },
+        {
+            "id": 23,
+            "name": {
+                "en": "Ekans",
+                "fr": "Abo",
+                "es": "Ekans"
+            },
+            "type": [8],
+            "abilities": [61],
+            "picture": "ekans.png",
+            "icon": "ekans_icon.png"
+        },
+        {
+            "id": 24,
+            "name": {
+                "en": "Arbok",
+                "fr": "Arbok",
+                "es": "Arbok"
+            },
+            "type": [8],
+            "abilities": [61],
+            "picture": "arbok.png",
+            "icon": "arbok_icon.png"
+        },
+        {
+            "id": 25,
+            "name": {
+                "en": "Pikachu",
+                "fr": "Pikachu",
+                "es": "Pikachu"
+            },
+            "type": [4],
+            "abilities": [],
+            "picture": "pikachu.png",
+            "icon": "pikachu_icon.png"
+        },
+        {
+            "id": 26,
+            "name": {
+                "en": "Raichu",
+                "fr": "Raichu",
+                "es": "Raichu"
+            },
+            "type": [4],
+            "abilities": [],
+            "picture": "raichu.png",
+            "icon": "raichu_icon.png"
+        },
+        {
+            "id": 27,
+            "name": {
+                "en": "Sandshrew",
+                "fr": "Sabelette",
+                "es": "Sandshrew"
+            },
+            "type": [9],
+            "abilities": [],
+            "picture": "sandshrew.png",
+            "icon": "sandshrew_icon.png"
+        },
+        {
+            "id": 28,
+            "name": {
+                "en": "Sandslash",
+                "fr": "Sablaireau",
+                "es": "Sandslash"
+            },
+            "type": [9],
+            "abilities": [],
+            "picture": "sandslash.png",
+            "icon": "sandslash_icon.png"
+        },
+        {
+            "id": 29,
+            "name": {
+                "en": "Nidoran♀",
+                "fr": "Nidoran♀",
+                "es": "Nidoran♀"
+            },
+            "type": [8],
+            "abilities": [],
+            "picture": "nidoran_female.png",
+            "icon": "nidoran_female_icon.png"
+        },
+        {
+            "id": 30,
+            "name": {
+                "en": "Nidorina",
+                "fr": "Nidorina",
+                "es": "Nidorina"
+            },
+            "type": [8],
+            "abilities": [],
+            "picture": "nidorina.png",
+            "icon": "nidorina_icon.png"
+        },
+        {
+            "id": 31,
+            "name": {
+                "en": "Nidoqueen",
+                "fr": "Nidoqueen",
+                "es": "Nidoqueen"
+            },
+            "type": [8, 9],
+            "abilities": [],
+            "picture": "nidoqueen.png",
+            "icon": "nidoqueen_icon.png"
+        },
+        {
+            "id": 32,
+            "name": {
+                "en": "Nidoran♂",
+                "fr": "Nidoran♂",
+                "es": "Nidoran♂"
+            },
+            "type": [8],
+            "abilities": [],
+            "picture": "nidoran_male.png",
+            "icon": "nidoran_male_icon.png"
+        },
+        {
+            "id": 33,
+            "name": {
+                "en": "Nidorino",
+                "fr": "Nidorino",
+                "es": "Nidorino"
+            },
+            "type": [8],
+            "abilities": [],
+            "picture": "nidorino.png",
+            "icon": "nidorino_icon.png"
+        },
+        {
+            "id": 34,
+            "name": {
+                "en": "Nidoking",
+                "fr": "Nidoking",
+                "es": "Nidoking"
+            },
+            "type": [8, 9],
+            "abilities": [],
+            "picture": "nidoking.png",
+            "icon": "nidoking_icon.png"
+        },        
+        {
+            "id": 35,
+            "name": {
+                "en": "Clefairy",
+                "fr": "Mélofée",
+                "es": "Clefairy"
+            },
+            "type": [18],
+            "abilities": [],
+            "picture": "clefairy.png",
+            "icon": "clefairy_icon.png"
+        },
+        {
+            "id": 36,
+            "name": {
+                "en": "Clefable",
+                "fr": "Mélodelf",
+                "es": "Clefable"
+            },
+            "type": [18],
+            "abilities": [],
+            "picture": "clefable.png",
+            "icon": "clefable_icon.png"
+        },
+        {
+            "id": 37,
+            "name": {
+                "en": "Vulpix",
+                "fr": "Goupix",
+                "es": "Vulpix"
+            },
+            "type": [2],
+            "abilities": [],
+            "picture": "vulpix.png",
+            "icon": "vulpix_icon.png"
+        },
+        {
+            "id": 38,
+            "name": {
+                "en": "Ninetales",
+                "fr": "Feunard",
+                "es": "Ninetales"
+            },
+            "type": [2],
+            "abilities": [],
+            "picture": "ninetales.png",
+            "icon": "ninetales_icon.png"
+        },
+        {
             "id": 60,
             "name": {
                 "en": "Poliwag",
@@ -481,7 +697,6 @@
                 "fr": "Bourg Palette",
                 "es": "Pueblo Paleta"
             },
-            "description": "The hometown of Ash Ketchum and the starting point of many trainers' journeys.",
             "pokemonIds": [60, 72, 118, 129]
         },
         {
@@ -500,10 +715,6 @@
                 "fr": "Céladopole",
                 "es": "Ciudad Verde"
             },
-            "description": "The first major city trainers encounter, home to the Viridian Gym.",
-            "Gym": {
-                "leader": ["Blue", "Giovanni"]
-            },
             "pokemonIds": [60, 72, 118, 129]
         },
         {
@@ -516,20 +727,21 @@
             "pokemonIds": [10, 13, 16, 19]
         },
         {
+            "id": 5,
             "name": {
-                "en": "Cerulean City",
-                "fr": "Azuria",
-                "es": "Ciudad Celeste"
-            },
-            "description": "Known for its beautiful waterfalls and the Cerulean Gym led by Misty."
+                "en": "Pewter City",
+                "fr": "Argenta",
+                "es": "Ciudad Plata"
+            }
         },
         {
+            "id": 6,
             "name": {
-                "en": "Vermilion City",
-                "fr": "Carmin-sur-Mer",
-                "es": "Ciudad Fucsia"
+                "en": "Route 3 of Kanto",
+                "fr": "Route 3 de Kanto",
+                "es": "Ruta 3 de Kanto"
             },
-            "description": "A bustling port city famous for its S.S. Anne cruise ship."
+            "pokemonIds": [16, 19, 21, 27, 39, 56]
         }
     ]
 }
